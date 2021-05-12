@@ -1,12 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Avatar from '@material-ui/core/Avatar';
-import Typography from '@material-ui/core/Typography';
-import { getUserProfile } from './Api';
-import Link from '@material-ui/core/Link';
+import { ListItem, ListItemText, ListItemAvatar, Avatar, Typography } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,26 +13,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const  UserItem = ({user}) => {
-    const [userInfo, setUserInfo] = useState({});
+const  UserItem = ({user, handleClick}) => {
     const classes = useStyles();
-    console.log(user);
-    useEffect(()=> {
-        getUserProfile(user.url, setUserInfo); 
-    },[user])
-    console.log(userInfo);
-
     return (
-        <ListItem alignItems="flex-start">
+        <ListItem button alignItems="flex-start" onClick={()=> handleClick(user)}>
             <ListItemAvatar>
-            <Avatar alt="Remy Sharp" src={userInfo?.avatar_url} />
+            <Avatar src={user?.avatar_url} />
             </ListItemAvatar>
             <ListItemText
-                primary={
-                    <Link href={userInfo?.html_url}>
-                        {userInfo?.login}/{userInfo?.name}
-                    </Link>
-                    }
+                primary={user?.login}
                 secondary={
                     <React.Fragment>
                     <Typography

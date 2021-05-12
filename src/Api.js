@@ -1,5 +1,5 @@
 const search = (searchParameter, setResults) =>{
-    fetch(`https://api.github.com/search/users?q=${searchParameter}&per_page=1`)
+    fetch(`https://api.github.com/search/users?q=${searchParameter}&per_page=3`)
     .then(res => res.json())
     .then(
         (result) => {
@@ -24,8 +24,50 @@ const getUserProfile = (userURL, setUserInfo) =>{
         }
     );
 };
+const getFollowingCount = (followingURL, setFollowingInfo) =>{
+    fetch(followingURL)
+    .then(res => res.json())
+    .then(
+        (result) => {
+            console.log(result);
+            setFollowingInfo(result);
+        },
+        (error) => {
+            console.log(error);
+        }
+    );
+};
+const getFollowersCount = (followersURL, setFollowersInfo) =>{
+    fetch(followersURL)
+    .then(res => res.json())
+    .then(
+        (result) => {
+            console.log(result);
+            setFollowersInfo(result);
+        },
+        (error) => {
+            console.log(error);
+        }
+    );
+};
+const getStarredCount = (starredURL, setStarredInfo) =>{
+    fetch(starredURL)
+    .then(res => res.json())
+    .then(
+        (result) => {
+            console.log(result);
+            setStarredInfo(result);
+        },
+        (error) => {
+            console.log(error);
+        }
+    );
+};
 
 export {
     search,
-    getUserProfile
+    getUserProfile,
+    getFollowingCount,
+    getFollowersCount,
+    getStarredCount
 };
