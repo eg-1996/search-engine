@@ -4,13 +4,13 @@ import './App.css';
 import ImputField from './InputField';
 import { Button, Grid } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
-import search from './Api';
+import { search } from './Api';
 import ResultBox from './ResultBox';
 
 
 const App = () => {
   const [searchField, setSearchField] = useState('');
-  const [results, setResults] =useState({});
+  const [results, setResults] =useState({items: [], total_count: 0});
 
   const handleChange = (event) => {
     setSearchField(event.target.value);
