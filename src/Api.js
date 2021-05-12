@@ -1,5 +1,5 @@
-const search = (searchParameter, setResults) =>{
-    fetch(`https://api.github.com/search/users?q=${searchParameter}&per_page=3`)
+const search = (searchParameter, page,perPage, setResults) =>{
+    fetch(`https://api.github.com/search/users?q=${searchParameter}&per_page=${perPage}&page=${page}`)
     .then(res => res.json())
     .then(
         (result) => {

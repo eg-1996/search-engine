@@ -19,7 +19,6 @@ const useStyles = makeStyles({
   });
 
 const UserCard = ({ user }) => {
-    console.log(!user);
     const classes = useStyles();
     if (!user) {
         return null;
