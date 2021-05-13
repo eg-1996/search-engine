@@ -16,23 +16,12 @@ const useStyles = makeStyles((theme) => ({
 const  UserItem = ({user, handleClick}) => {
     const classes = useStyles();
     return (
-        <ListItem button alignItems="flex-start" onClick={()=> handleClick(user)}>
+        <ListItem button alignItems='flex-start' onClick={()=> handleClick(user)}>
             <ListItemAvatar>
             <Avatar src={user?.avatar_url} />
             </ListItemAvatar>
             <ListItemText
                 primary={user?.login}
-                secondary={
-                    <React.Fragment>
-                    <Typography
-                        variant="body2"
-                        className={classes.inline}
-                        color="textPrimary"
-                    >
-                    </Typography>
-                        {" More relevant info or description"}
-                    </React.Fragment>
-                }
             />
         </ListItem>
     );

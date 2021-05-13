@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import './App.css';
 import ImputField from './InputField';
-import { Button, Grid } from '@material-ui/core';
+import { Button, Grid, Typography } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import { search } from './Api';
 import ResultBox from './ResultBox';
@@ -13,32 +13,59 @@ const App = () => {
   const [searchField, setSearchField] = useState('');
   const [page, setPage] = useState(1);
   const [results, setResults] =useState({items: [], total_count: 0});
+  const[isFieldEmpty, setIsFieldEmpty] = useState(true);
   const perPage = 10;
   const handleTextEvent = (event) => {
-    setSearchField(event.target.value);
+    if (event.target.value.trim().length>0) {
+      setIsFieldEmpty(false);
+    }
+    setSearchField(event.target.value.trim());
   };
   const handlePageEvent = (event, value) =>{
     search(searchField, value, perPage, setResults)
     setPage(value);
+  };
+
+  const handleSearchEvent =(event) =>{
+    console.log(searchField.length);
+    if (searchField.length<=0) {
+      setIsFieldEmpty(true);
+    } else {
+      setIsFieldEmpty(false);
+    }
+    if(
+      !isFieldEmpty && 
+      (event.type === 'click' || event.key === 'Enter')
+      ){
+      search(searchField, page, perPage, setResults);
+    }
   }
   return (
-    <div className="App">
+    <div className='App-header'>
       <Grid container>
-      <Grid item xs ={9}>
+      <Grid item xs ={8}>
         <ImputField 
+          error={isFieldEmpty}
+          label='Search'
           id='test'
           value={searchField}
           onChange={handleTextEvent}
+          onKeyDown={handleSearchEvent}
         />
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={2}>
         <Button 
-          variant="contained"
+          variant='contained'
           startIcon={<SearchIcon />}
-          onClick={()=>search(searchField, page, perPage, setResults)}
+          onClick={handleSearchEvent}
         >
           Search
         </Button>
+        </Grid>
+        <Grid item xs={2}>
+        <Typography variant='body1' >
+          TotalCount: {results.total_count}
+        </Typography>
         </Grid>
       </Grid>
       <ResultBox 
