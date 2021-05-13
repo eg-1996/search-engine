@@ -4,11 +4,10 @@ import UserItem from './UserItem';
 import UserCard from './UserCard';
 import { getUserProfile } from './Api';
 
-const ResultBox = ({ results }) => {
+const ResultBox = ({ results, setErrorMessage }) => {
     const [selectedUser, setSelectedUser] = useState(null);
-    console.log(results);
     const handleClick = (user) => { 
-        getUserProfile(user.url, setSelectedUser);
+        getUserProfile(user.url, setSelectedUser, setErrorMessage);
     }
 
     const userList =[];

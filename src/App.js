@@ -6,7 +6,7 @@ import { Button, Grid, Typography } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import { search } from './Api';
 import ResultBox from './ResultBox';
-import Pagination from '@material-ui/lab/Pagination';
+import { Pagination, Alert }  from '@material-ui/lab';
 
 
 const App = () => {
@@ -14,6 +14,7 @@ const App = () => {
   const [page, setPage] = useState(1);
   const [results, setResults] =useState({items: [], total_count: 0});
   const[isFieldEmpty, setIsFieldEmpty] = useState(true);
+  const [errorMessage, setErrorMessage] = useState(null);
   const perPage = 10;
   const handleTextEvent = (event) => {
     if (event.target.value.trim().length>0) {
@@ -22,12 +23,13 @@ const App = () => {
     setSearchField(event.target.value.trim());
   };
   const handlePageEvent = (event, value) =>{
-    search(searchField, value, perPage, setResults)
+    search(searchField, value, perPage, setResults, setErrorMessage);
     setPage(value);
   };
-
+// while (true) {
+//   search(searchField, 'eduardo', perPage, setResults, setErrorMessage);
+// };
   const handleSearchEvent =(event) =>{
-    console.log(searchField.length);
     if (searchField.length<=0) {
       setIsFieldEmpty(true);
     } else {
@@ -37,10 +39,11 @@ const App = () => {
       !isFieldEmpty && 
       (event.type === 'click' || event.key === 'Enter')
       ){
-      search(searchField, 1, perPage, setResults);
+      search(searchField, 1, perPage, setResults, setErrorMessage);
       setPage(1);
     }
   }
+  console.log(errorMessage);
   return (
     <div className='App-header'>
       <Grid container>
@@ -71,11 +74,15 @@ const App = () => {
       </Grid>
       <ResultBox 
         results={results}
+        setErrorMessage={setErrorMessage}
       />
         {results.total_count>0
         ? <Pagination count={Math.floor(results.total_count/perPage)} page={page} onChange={handlePageEvent} />
         : null
         }
+        {errorMessage
+        ? <Alert severity="error">{errorMessage.message}</Alert>
+        : null}
     </div>
   );
 }

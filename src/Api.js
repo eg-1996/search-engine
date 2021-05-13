@@ -1,73 +1,31 @@
-const search = (searchParameter, page,perPage, setResults) =>{
-    fetch(`https://api.github.com/search/users?q=${searchParameter}&per_page=${perPage}&page=${page}`)
-    .then(res => res.json())
+const apiBase =(URL, setFunction, setErrorFunction) =>{
+    fetch(URL)
+    .then(res => {
+        if (!res.ok) { throw res }
+        return res.json()
+    })
     .then(
         (result) => {
-            console.log(result);
-            setResults(result);
-        },
+            setFunction(result);
+            setErrorFunction(null);
+        })
+    .catch(
         (error) => {
-            console.log(error);
+            error.text().then(errorMessage =>{
+                console.log(errorMessage);
+                setErrorFunction(JSON.parse(errorMessage));
+            })
         }
     );
-};
-const getUserProfile = (userURL, setUserInfo) =>{
-    fetch(userURL)
-    .then(res => res.json())
-    .then(
-        (result) => {
-            console.log(result);
-            setUserInfo(result);
-        },
-        (error) => {
-            console.log(error);
-        }
-    );
-};
-const getFollowingCount = (followingURL, setFollowingInfo) =>{
-    fetch(followingURL)
-    .then(res => res.json())
-    .then(
-        (result) => {
-            console.log(result);
-            setFollowingInfo(result);
-        },
-        (error) => {
-            console.log(error);
-        }
-    );
-};
-const getFollowersCount = (followersURL, setFollowersInfo) =>{
-    fetch(followersURL)
-    .then(res => res.json())
-    .then(
-        (result) => {
-            console.log(result);
-            setFollowersInfo(result);
-        },
-        (error) => {
-            console.log(error);
-        }
-    );
-};
-const getStarredCount = (starredURL, setStarredInfo) =>{
-    fetch(starredURL)
-    .then(res => res.json())
-    .then(
-        (result) => {
-            console.log(result);
-            setStarredInfo(result);
-        },
-        (error) => {
-            console.log(error);
-        }
-    );
-};
+}
 
+
+const search = (searchParameter, page, perPage, setResults, setErrorMessage) =>
+    apiBase(`https://api.github.com/search/users?q=${searchParameter}&per_page=${perPage}&page=${page}`, setResults,setErrorMessage);
+
+const getUserProfile = (userURL, setUserInfo, setErrorMessage) =>
+    apiBase(userURL, setUserInfo, setErrorMessage);
 export {
     search,
-    getUserProfile,
-    getFollowingCount,
-    getFollowersCount,
-    getStarredCount
+    getUserProfile
 };
