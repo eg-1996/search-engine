@@ -37,7 +37,8 @@ const App = () => {
       !isFieldEmpty && 
       (event.type === 'click' || event.key === 'Enter')
       ){
-      search(searchField, page, perPage, setResults);
+      search(searchField, 1, perPage, setResults);
+      setPage(1);
     }
   }
   return (
